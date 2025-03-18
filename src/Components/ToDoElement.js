@@ -1,26 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
 const ToDoElement = ({ deleteToDo, id, description }) => {
-    const [stateToDo, setStateToDo] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
     let descriptionToDo = description;
 
     const toDoElement = useRef();
     const modalElement = useRef();
 
     useEffect(() => {
-        if(stateToDo)
+
+        if(isCompleted)
             toDoElement.current.classList.add("Completed");
         else
             toDoElement.current.classList.remove("Completed");
 
-    },[stateToDo])
+    },[isCompleted])
 
     return (
         <>
             <div ref={toDoElement} className="toDoElement">
                 <h2>TAREA</h2>
                 <p>{description}</p>
-                <input type="checkbox" onChange={(e) => setStateToDo(e.target.checked)}></input>
+                <input type="checkbox" onChange={(e) => setIsCompleted(e.target.checked)}></input>
                 <div className="removeToDo" onClick={() => deleteToDo(id)}> X </div>
                 <div className="seeMore" onClick={() => modalElement.current.showModal()}>Ver mas</div>
             </div>
