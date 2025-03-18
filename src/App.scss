@@ -17,52 +17,100 @@
     > .todos {
         display: grid;
         gap: 10px;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
+
     h1 {
         text-align: center;
+    }
+
+    &.dark {
+
     }
 }
 
 .toDoElement {
     border: 2px solid black;
+    box-shadow: 0 0 6px #ababab;
     height: 200px;
     margin: 0;
     padding: 0;
     position: relative;
     
+    .removeToDo {
+        cursor: pointer;
+        line-height: 1em;
+        position: absolute;
+        scale: 2;
+        top: 0;
+        transform-origin: top right;
+        right: 5px;
+        user-select: none;
+    }
+
+    .seeMore {
+        bottom: 10px;
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+    }
+    
     h2 {
         background-color: #a2a2a2;
+        box-shadow: 0 1px 5px black;
         margin: 0;
         text-align: center;
     }
-
-    p {
-        margin: 0;
-        padding: 5px;
-    }
-
+    
     input {
         left: 2px;
         margin: 0;
         position: absolute;
-        scale: 2;
+        scale: 2.2;
         top: 2px;
         transform-origin: top left;
     }
+    
+    p {
+        display: -webkit-box;
+        font-size: 1.2em;
+        line-clamp: 4;
+        overflow: hidden;
+        margin: 0;
+        padding: 5px;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+    }
 
+    // &:hover {
+    //     background-color: #fff;
+    //     height: fit-content;
+    //     min-height: 200px;
+    //     p {
+    //         -webkit-line-clamp: none;
+    //         line-clamp: none;
+    //     }
+    // }
+    
     &.Completed {
         h2{
             background-color: green;
         }
     }
-    
-    .removeToDo {
-        cursor: pointer;
-        position: absolute;
-        scale: 2;
-        top: 2px;
-        user-select: none;
-        right: 10px;
+
+    &+.modalDialog {
+        padding: 30px;
+        width: 60%;
+
+        > p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        > form {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
     }
 }
