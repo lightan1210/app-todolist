@@ -1,16 +1,19 @@
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import ToDoElement from "./ToDoElement"
+import HolderSpace from "./HolderSpace";
 
 let nextId = 0;
 
-const initialToDos = [{id:nextId++, description:"Mollit do in anim anim exercitation dolor in sint velit eu cillum ut consequat excepteur. Excepteur Lorem ut proident aute qui amet sit cillum velit exercitation voluptate fugiat. Nulla commodo laboris ullamco exercitation dolore fugiat. Quis proident ad occaecat consectetur ut enim adipisicing cupidatat eu culpa aute nisi. Labore nisi dolor commodo nostrud proident dolore laboris ex anim id irure. Sunt consectetur enim ipsum sunt ut qui enim ea aliquip incididunt. Ex ex duis quis dolore labore amet Lorem.Lorem excepteur incididunt sit do minim eiusmod ullamco. Id ea dolor tempor voluptate aliqua non amet voluptate ullamco. Eu do voluptate officia Lorem consectetur enim commodo culpa labore incididunt laborum dolor sit ad. Fugiat aute velit laboris nisi ipsum quis voluptate laboris. Veniam incididunt labore Lorem anim non ullamco irure exercitation occaecat officia officia ea sint.Do reprehenderit dolor proident tempor id reprehenderit dolor. Magna et eu id nulla occaecat cupidatat incididunt cupidatat id consequat minim. Ipsum labore officia mollit dolore est id velit non laboris ea irure amet. Id dolor id pariatur dolor officia sunt consectetur aliqua eu aute do. Excepteur occaecat aliquip sint commodo commodo. Est enim magna aliqua sunt in enim ipsum cupidatat anim ullamco eiusmod qui velit ex. Est sunt occaecat ea officia.Eu irure reprehenderit excepteur culpa do culpa in sint eiusmod ipsum. Officia Lorem nostrud ut officia amet ut duis irure aliqua dolore do sit voluptate irure. Minim ea pariatur do laborum velit quis do ad culpa commodo quis aliquip consequat. Lorem et veniam minim exercitation amet. Cupidatat excepteur ut eu ipsum eiusmod nostrud consequat reprehenderit nulla aute amet."}];
+const initialToDos = [{id:nextId++, description:"Mollit do in anim anim exercitation dolor in sint velit eu cillum ut consequat excepteur. Excepteur Lorem ut proident aute qui amet sit cillum velit exercitation voluptate fugiat. Nulla commodo laboris ullamco exercitation dolore fugiat. Quis proident ad occaecat consectetur ut enim adipisicing cupidatat eu culpa aute nisi. Labore nisi dolor commodo nostrud proident dolore laboris ex anim id irure. Sunt consectetur enim ipsum sunt ut qui enim ea aliquip incididunt. Ex ex duis quis dolore labore amet Lorem."}];
 
 const ToDoList = () => {
     
     const [todos, setTodos] = useState(initialToDos);
     const [descriptionToDo, setDescriptionToDo] = useState('');
+    const [activeElement, setActiveElement] = useState(null);
 
     const inputDescriptionToDoElement = useRef();
+    let allHolders = document.querySelectorAll(".invisibleHolderSpace");
     
     const addToDo = () => {
 
@@ -28,6 +31,32 @@ const ToDoList = () => {
         setTodos(todos.filter(todo => todo.id !== id));
     }
 
+    const onDrop = (position) => {
+        if(activeElement == null || activeElement == undefined) return;
+
+        const elementToMove = todos[activeElement];
+
+        const updatedTodos = todos.filter((_, index) => index !== activeElement);
+
+        updatedTodos.splice(position, 0, elementToMove);
+
+        setTodos(updatedTodos);
+
+        allHolders = document.querySelectorAll(".minimumHolderSpace");
+        [...allHolders].forEach(holder => {
+            holder.classList.add('invisibleHolderSpace');
+            holder.classList.remove('minimumHolderSpace');
+        })
+    }
+
+    const showHolderSpaces = () => {
+        allHolders = document.querySelectorAll(".invisibleHolderSpace");
+        [...allHolders].forEach(holder => {
+            holder.classList.remove('invisibleHolderSpace');
+            holder.classList.add('minimumHolderSpace');
+        })
+    }
+
     return (
         <div className="toDoList">
             <div className="newToDoField">
@@ -35,9 +64,16 @@ const ToDoList = () => {
                 <button onClick={() => addToDo()}>Agregar tarea</button>
             </div>
             <h1>LISTA DE TAREAS</h1>
+
             <div className="todos">
+                <HolderSpace onDrop={() => onDrop(0)} />
                 {todos.map((a, key) => {
-                    return( <ToDoElement deleteToDo={deleteToDo} key={a.id} id={a.id} description={a.description} /> )
+                    return( 
+                        <Fragment key={a.id} >
+                            <ToDoElement deleteToDo={deleteToDo} id={a.id} description={a.description} index={key} setActiveElement={setActiveElement} showHolderSpaces={showHolderSpaces}/>
+                            <HolderSpace onDrop={() => onDrop(key+1)} />
+                        </Fragment>
+                    )
                 })}
             </div>
         </div>

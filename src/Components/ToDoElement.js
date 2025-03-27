@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const ToDoElement = ({ deleteToDo, id, description }) => {
+const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, showHolderSpaces }) => {
     const [isCompleted, setIsCompleted] = useState(false);
     let descriptionToDo = description;
 
@@ -18,7 +18,15 @@ const ToDoElement = ({ deleteToDo, id, description }) => {
 
     return (
         <>
-            <div ref={toDoElement} className="toDoElement">
+            <div ref={toDoElement} className="toDoElement"
+            draggable
+            onDragStart={() => {
+                setActiveElement(index);
+                setTimeout(() => {
+                    showHolderSpaces();
+                }, 250);
+            }}
+            onDragEnd={() => setActiveElement(null)}>
                 <h2>TAREA</h2>
                 <p>{description}</p>
                 <input type="checkbox" onChange={(e) => setIsCompleted(e.target.checked)}></input>
