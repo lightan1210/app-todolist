@@ -45,7 +45,8 @@ $color5: #277835;
     }
 
     > .todos {
-        border: 2px solid #787878;
+        border-radius: 4px;
+        box-shadow: 0 0 3px $color2;
         display: grid;
         gap: 10px;
         grid-auto-flow: row;
@@ -58,8 +59,8 @@ $color5: #277835;
             border: 3px dashed $color4;
             border-radius: 10px;
             cursor: grab;
-            height: 200px;
-            line-height: 200px;
+            height: 75px;
+            line-height: 75px;
             opacity: 1;
             text-align: center;
             transition: .2s ease-in-out;
@@ -86,17 +87,13 @@ $color5: #277835;
         color: $color3;
         text-align: center;
     }
-
-    &.dark {
-
-    }
 }
 
 .toDoElement {
     background-color: $color2;
     border-radius: 5px;
     color: $color1;
-    height: 200px;
+    height: 75px;
     margin: 0;
     width: 250px;
     padding: 0;
@@ -104,7 +101,7 @@ $color5: #277835;
     
     .removeToDo {
         cursor: pointer;
-        line-height: 1em;
+        font-size: .8em;
         position: absolute;
         scale: 2;
         top: 0;
@@ -132,23 +129,24 @@ $color5: #277835;
     
     input {
         border-radius: 10px;
-        bottom: 2px;
+        top: 2px;
         left: 2px;
         margin: 0;
         position: absolute;
         scale: 2;
-        transform-origin: bottom left;
+        transform-origin: top left;
     }
     
     p {
         display: -webkit-box;
         font-size: 1.2em;
-        line-clamp: 4;
+        line-clamp: 1;
+        line-height: 1.4em;
         overflow: hidden;
         margin: 0;
-        padding: 5px;
+        padding: 0px 35px 0;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4;
+        -webkit-line-clamp: 1;
     }
     
     &.Completed {
@@ -171,12 +169,19 @@ $color5: #277835;
         position: relative;
         width: 80%;
 
+        > form button {
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            outline: none;
+        }
+
         > p {
             background-color: $color2;
             font-size: 1.5em;
-            min-height: calc(100% - 45px);
+            min-height: calc(100% - 55px);
             margin-top: 45px;
-            padding: 0 10px 0;
+            padding: 10px 10px 0;
             position: absolute;
             width: calc(100% - 20px);
         }

@@ -32,7 +32,7 @@ const ToDoList = () => {
     }
 
     const onDrop = (position) => {
-        if(activeElement == null || activeElement == undefined) return;
+        if(activeElement === null || activeElement === undefined) return;
 
         const elementToMove = todos[activeElement];
 
@@ -42,19 +42,33 @@ const ToDoList = () => {
 
         setTodos(updatedTodos);
 
-        allHolders = document.querySelectorAll(".minimumHolderSpace");
-        [...allHolders].forEach(holder => {
-            holder.classList.add('invisibleHolderSpace');
-            holder.classList.remove('minimumHolderSpace');
-        })
+        showHolderSpaces(false);
+        // allHolders = document.querySelectorAll(".minimumHolderSpace");
+        // [...allHolders].forEach(holder => {
+        //     holder.classList.add('invisibleHolderSpace');
+        //     holder.classList.remove('minimumHolderSpace');
+        // })
     }
 
-    const showHolderSpaces = () => {
-        allHolders = document.querySelectorAll(".invisibleHolderSpace");
-        [...allHolders].forEach(holder => {
-            holder.classList.remove('invisibleHolderSpace');
-            holder.classList.add('minimumHolderSpace');
-        })
+    const showHolderSpaces = (toShow, index = -1) => {
+
+
+        if(toShow){
+            allHolders = document.querySelectorAll(".invisibleHolderSpace");
+            [...allHolders].forEach( (holder, i) => {
+                if(i !== index && i !== index+1) {
+                    holder.classList.remove('invisibleHolderSpace');
+                    holder.classList.add('minimumHolderSpace');
+                }
+            })
+        }
+        else {
+            allHolders = document.querySelectorAll(".minimumHolderSpace");
+            [...allHolders].forEach(holder => {
+                holder.classList.add('invisibleHolderSpace');
+                holder.classList.remove('minimumHolderSpace');
+            })
+        }
     }
 
     return (
@@ -71,7 +85,7 @@ const ToDoList = () => {
                     return( 
                         <Fragment key={a.id} >
                             <ToDoElement deleteToDo={deleteToDo} id={a.id} description={a.description} index={key} setActiveElement={setActiveElement} showHolderSpaces={showHolderSpaces}/>
-                            <HolderSpace onDrop={() => onDrop(key+1)} />
+                            <HolderSpace onDrop={() => onDrop(key)} />
                         </Fragment>
                     )
                 })}

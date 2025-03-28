@@ -23,11 +23,14 @@ const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, sho
             onDragStart={() => {
                 setActiveElement(index);
                 setTimeout(() => {
-                    showHolderSpaces();
+                    showHolderSpaces(true, index);
                 }, 250);
             }}
-            onDragEnd={() => setActiveElement(null)}>
-                <h2>TAREA</h2>
+            onDragEnd={() => {
+                    setActiveElement(null);
+                    showHolderSpaces(false);
+                }}>
+                {/*<h2>TAREA</h2>*/}
                 <p>{description}</p>
                 <input type="checkbox" onChange={(e) => setIsCompleted(e.target.checked)}></input>
                 <div className="removeToDo" onClick={() => deleteToDo(id)}> X </div>
