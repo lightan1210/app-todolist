@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function HolderSpace( { onDrop }) {
+export default function HolderSpace( { index, onDrop }) {
     const [showHolder, setShowHolder] = useState('invisibleHolderSpace');
 
     return (
@@ -8,7 +8,7 @@ export default function HolderSpace( { onDrop }) {
             onDragEnter={() => setShowHolder('holderSpace')}
             onDragLeave={() => setShowHolder('minimumHolderSpace')}
             onDrop={ () => {
-                onDrop();
+                onDrop(index);
                 setShowHolder('invisibleHolderSpace');
             }}
             onDragOver={e => e.preventDefault()}

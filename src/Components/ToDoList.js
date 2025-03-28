@@ -4,7 +4,7 @@ import HolderSpace from "./HolderSpace";
 
 let nextId = 0;
 
-const initialToDos = [{id:nextId++, description:"Mollit do in anim anim exercitation dolor in sint velit eu cillum ut consequat excepteur. Excepteur Lorem ut proident aute qui amet sit cillum velit exercitation voluptate fugiat. Nulla commodo laboris ullamco exercitation dolore fugiat. Quis proident ad occaecat consectetur ut enim adipisicing cupidatat eu culpa aute nisi. Labore nisi dolor commodo nostrud proident dolore laboris ex anim id irure. Sunt consectetur enim ipsum sunt ut qui enim ea aliquip incididunt. Ex ex duis quis dolore labore amet Lorem."}];
+const initialToDos = [{id:nextId++, description:"Lorem duis mollit Lorem aliquip ea laborum incididunt laboris culpa consectetur occaecat duis. Fugiat pariatur cupidatat officia pariatur ullamco. Cillum incididunt laborum cupidatat laborum. Aliquip ea et dolor officia in cupidatat cillum incididunt amet sunt.Cupidatat mollit tempor nisi dolore incididunt aute id culpa minim. Commodo quis laborum ut nostrud aute consectetur pariatur dolore labore ex consectetur id cupidatat. Mollit aliquip velit eiusmod nostrud. Et aliquip ullamco minim aute veniam veniam non ad pariatur aliqua ipsum mollit.Magna mollit culpa magna nisi quis duis proident esse laboris culpa sunt voluptate proident. Laborum ad qui do veniam sit duis et labore anim reprehenderit eu. Tempor laboris eu nisi ut tempor non dolor eu occaecat velit occaecat.Ullamco ad pariatur nisi et ex mollit est nostrud commodo. Id irure aliquip laboris commodo consequat aliquip sit nisi voluptate cillum ex enim dolore. Velit ullamco consequat non velit proident veniam.Elit ex proident esse exercitation sint consequat nostrud. Excepteur tempor id mollit do laborum exercitation nostrud aliquip mollit mollit tempor do eu ex. Eu velit irure cupidatat cupidatat nostrud exercitation occaecat sunt nostrud.Aute anim esse quis cupidatat irure dolore deserunt non ad eu incididunt excepteur elit. Commodo id nulla aliqua ut eiusmod aute commodo est ipsum sunt ipsum. Exercitation enim cupidatat nisi irure non qui aliqua. Irure fugiat laborum sunt commodo adipisicing laborum. Pariatur consequat ut elit cupidatat pariatur cupidatat eu non proident proident cupidatat aute ea. Anim sint mollit voluptate esse velit ad sunt nulla consectetur. Tempor minim mollit et laboris duis nulla.Ullamco incididunt laborum amet qui amet. In pariatur ipsum ea fugiat nostrud ipsum nulla dolore incididunt eiusmod non. Consectetur cillum dolor ut exercitation est exercitation non ex Lorem officia consectetur.Dolore anim est pariatur Lorem ipsum dolor dolor ex ea mollit ea. Quis officia ex duis in qui sint dolor non. Quis culpa sit velit velit non."}];
 
 const ToDoList = () => {
     
@@ -38,21 +38,22 @@ const ToDoList = () => {
 
         const updatedTodos = todos.filter((_, index) => index !== activeElement);
 
-        updatedTodos.splice(position, 0, elementToMove);
-
+        if(activeElement > position)
+            updatedTodos.splice(position, 0, elementToMove);
+        else
+            updatedTodos.splice(position-1, 0, elementToMove);
+        
         setTodos(updatedTodos);
 
-        showHolderSpaces(false);
-        // allHolders = document.querySelectorAll(".minimumHolderSpace");
-        // [...allHolders].forEach(holder => {
-        //     holder.classList.add('invisibleHolderSpace');
-        //     holder.classList.remove('minimumHolderSpace');
-        // })
+        // showHolderSpaces(false);
+        allHolders = document.querySelectorAll(".minimumHolderSpace");
+        [...allHolders].forEach(holder => {
+            holder.classList.add('invisibleHolderSpace');
+            holder.classList.remove('minimumHolderSpace');
+        })
     }
 
-    const showHolderSpaces = (toShow, index = -1) => {
-
-
+    const showHolderSpaces = (toShow = true, index = -1) => {
         if(toShow){
             allHolders = document.querySelectorAll(".invisibleHolderSpace");
             [...allHolders].forEach( (holder, i) => {
@@ -80,12 +81,12 @@ const ToDoList = () => {
             <h1>LISTA DE TAREAS</h1>
 
             <div className="todos">
-                <HolderSpace onDrop={() => onDrop(0)} />
+                <HolderSpace index={0} onDrop={() => onDrop(0)} />
                 {todos.map((a, key) => {
                     return( 
                         <Fragment key={a.id} >
                             <ToDoElement deleteToDo={deleteToDo} id={a.id} description={a.description} index={key} setActiveElement={setActiveElement} showHolderSpaces={showHolderSpaces}/>
-                            <HolderSpace onDrop={() => onDrop(key)} />
+                            <HolderSpace index={key+1} onDrop={onDrop} />
                         </Fragment>
                     )
                 })}

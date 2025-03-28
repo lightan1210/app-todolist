@@ -22,19 +22,20 @@ const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, sho
             draggable
             onDragStart={() => {
                 setActiveElement(index);
+                console.log(`Agarre el elemento ${index}`);
                 setTimeout(() => {
                     showHolderSpaces(true, index);
-                }, 250);
+                }, 125);
             }}
             onDragEnd={() => {
                     setActiveElement(null);
                     showHolderSpaces(false);
                 }}>
                 {/*<h2>TAREA</h2>*/}
-                <p>{description}</p>
+                <p onClick={() => modalElement.current.showModal()}>{description}</p>
                 <input type="checkbox" onChange={(e) => setIsCompleted(e.target.checked)}></input>
                 <div className="removeToDo" onClick={() => deleteToDo(id)}> X </div>
-                <div className="seeMore" onClick={() => modalElement.current.showModal()}>Ver mas</div>
+                {/* <div className="seeMore" >Ver mas</div> */}
             </div>
             
             <dialog className="modalDialog" closedby='any' ref={modalElement}>

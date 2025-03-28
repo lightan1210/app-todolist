@@ -46,7 +46,7 @@ $color5: #277835;
 
     > .todos {
         border-radius: 4px;
-        box-shadow: 0 0 3px $color2;
+        box-shadow: 0 0 2px $color2;
         display: grid;
         gap: 10px;
         grid-auto-flow: row;
@@ -59,8 +59,8 @@ $color5: #277835;
             border: 3px dashed $color4;
             border-radius: 10px;
             cursor: grab;
-            height: 75px;
-            line-height: 75px;
+            height: 35px;
+            line-height: 35px;
             opacity: 1;
             text-align: center;
             transition: .2s ease-in-out;
@@ -75,11 +75,13 @@ $color5: #277835;
             background-color: rgba($color4,.1);
             border-radius: 10px;
             height: 20px;
-
+            transition: .2s ease-in-out;
+            
         }
-
+        
         > .invisibleHolderSpace {
-            display: none;
+            height: 0;
+            transition: .2s ease-in-out;
         }
     }
 
@@ -93,7 +95,7 @@ $color5: #277835;
     background-color: $color2;
     border-radius: 5px;
     color: $color1;
-    height: 75px;
+    height: 35px;
     margin: 0;
     width: 250px;
     padding: 0;
@@ -104,7 +106,7 @@ $color5: #277835;
         font-size: .8em;
         position: absolute;
         scale: 2;
-        top: 0;
+        top: 2px;
         transform-origin: top right;
         right: 5px;
         user-select: none;
@@ -129,8 +131,8 @@ $color5: #277835;
     
     input {
         border-radius: 10px;
-        top: 2px;
-        left: 2px;
+        top: 4px;
+        left: 4px;
         margin: 0;
         position: absolute;
         scale: 2;
@@ -138,6 +140,7 @@ $color5: #277835;
     }
     
     p {
+        cursor: pointer;
         display: -webkit-box;
         font-size: 1.2em;
         line-clamp: 1;
@@ -160,7 +163,7 @@ $color5: #277835;
     &+.modalDialog {
         background-color: $color4;
         border: none;
-        box-shadow: 0 0 10px $color4;
+        box-shadow: 0 0 2px $color4;
         color: $color1;
         height: fit-content;
         min-height: 70%;
@@ -168,6 +171,26 @@ $color5: #277835;
         padding: 0;
         position: relative;
         width: 80%;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: $color4; 
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $color1; 
+            border-radius: 5px;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: rgb(52, 68, 155); 
+        }
 
         > form button {
             border-radius: 5px;
@@ -179,9 +202,9 @@ $color5: #277835;
         > p {
             background-color: $color2;
             font-size: 1.5em;
-            min-height: calc(100% - 55px);
+            min-height: calc(100% - 65px);
             margin-top: 45px;
-            padding: 10px 10px 0;
+            padding: 10px;
             position: absolute;
             width: calc(100% - 20px);
         }
