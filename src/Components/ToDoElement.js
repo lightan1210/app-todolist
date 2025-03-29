@@ -1,11 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { UserContext } from "./ToDoList";
 
-const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, showHolderSpaces }) => {
+const ToDoElement = ({ id, description, index, idList }) => {
+// const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, showHolderSpaces }) => {
     const [isCompleted, setIsCompleted] = useState(false);
     let descriptionToDo = description;
 
     const toDoElement = useRef();
     const modalElement = useRef();
+
+    const { deleteToDo, setActiveElement, showHolderSpaces} = useContext(UserContext);
+
+    // const deleteToDo = useContext(UserContext.deleteToDo);
+    // const setActiveElement = useContext(UserContext.setActiveElement);
+    // const showHolderSpaces = useContext(UserContext.showHolderSpaces);
+    
 
     useEffect(() => {
 
@@ -21,11 +30,10 @@ const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, sho
             <div ref={toDoElement} className="toDoElement"
             draggable
             onDragStart={() => {
-                setActiveElement(index);
-                console.log(`Agarre el elemento ${index}`);
+                setActiveElement({idList,index});
                 setTimeout(() => {
-                    showHolderSpaces(true, index);
-                }, 125);
+                    showHolderSpaces(true, index, idList);
+                }, 200);
             }}
             onDragEnd={() => {
                     setActiveElement(null);
