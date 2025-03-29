@@ -79,7 +79,7 @@ const ToDoList = () => {
 
         const elementToMove = (todos.filter(e => e.idList === activeElement.idList))[activeElement.index];
         
-        const updatedTodos = todos.filter(e => e != elementToMove);
+        const updatedTodos = todos.filter(e => e !== elementToMove);
         
         if(elementToMove.idList !== idDestinyList)
             elementToMove.idList = idDestinyList;
@@ -112,10 +112,12 @@ const ToDoList = () => {
 
             const element = (todos.filter(e => e.idList === idList))[index];
 
-            const positionElement = todos.findIndex(e => e == element);
+            const positionElement = todos.findIndex(e => e === element);
 
             // console.log(idList + " " + index);
             // console.log(positionElement);
+
+            // TODO Generalizar idList a fin de que, en caso de borrar una lista se actualice el número de lista (quizas sea necesario agregar un indice de lista)
 
             allHolders[positionElement+idList].classList.add('invisibleHolderSpace');
             allHolders[positionElement+idList+1].classList.add('invisibleHolderSpace');
