@@ -95,10 +95,10 @@ const ToDoList = () => {
 
 return (
     <div className="toDoList">
-                {/* <div className="newListField">
+                <div className="newListField">
                     <input ref={inputTitleListElement} type='text'></input>
                     <button onClick={() => addList(inputTitleListElement.current.value)}>Crear lista</button>
-                </div> */}
+                </div>
                 <div className="newToDoField">
                     <input ref={inputDescriptionToDoElement} type='text'></input>
                     <button onClick={() => addToDo(inputDescriptionToDoElement.current.value)}>Agregar tarea</button>
