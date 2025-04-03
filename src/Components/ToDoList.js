@@ -78,12 +78,8 @@ const ToDoList = () => {
 
         const updatedTodos = todos.filter(todo => todo !== elementToMove);
 
-        console.log(globalOriginOfDestinyPosition);
-
         if(elementToMove.idList !== idDestinyList)
             elementToMove.idList = idDestinyList;
-
-        console.log(elementToMove);
 
         if(indexOfElementToMove < globalOriginOfDestinyPosition + position)
             updatedTodos.splice(globalOriginOfDestinyPosition + position-1, 0, elementToMove);
@@ -106,8 +102,6 @@ return (
                 <h1>LISTA DE TAREAS</h1>
                 <UserContext.Provider value={{onDrop, deleteToDo, activeElement, setActiveElement }} >
                     <div className="lists">
-                        {console.table(todos)}
-                        {console.log(`Próximo ID para tarea: ${nextIdToDo}`)}
                         {
                             lists &&
                             lists.map((list) => {
