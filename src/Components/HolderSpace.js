@@ -2,9 +2,10 @@ import { useContext, useState } from "react"
 import { UserContext } from "./ToDoList";
 
 export default function HolderSpace( { index, idList }) {
-    const [showHolder, setShowHolder] = useState('invisibleHolderSpace');
-
     const { onDrop } = useContext(UserContext);
+    
+    const [showHolder, setShowHolder] = useState('minimumHolderSpace');
+
 
     return (
         <section
@@ -12,7 +13,7 @@ export default function HolderSpace( { index, idList }) {
             onDragLeave={() => setShowHolder('minimumHolderSpace')}
             onDrop={ () => {
                 onDrop(index, idList);
-                setShowHolder('invisibleHolderSpace');
+                setShowHolder('minimumHolderSpace');
             }}
             onDragOver={e => e.preventDefault()}
             className={showHolder}

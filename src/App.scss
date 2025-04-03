@@ -76,20 +76,23 @@ $color5: #277835;
             width: 250px;
             
             &::after {
-                content:"Mover aqui";
+                content: "Mover Aquí";
+                transition: .2s ease-in-out;
             }
         }
         
         > .minimumHolderSpace {
             background-color: rgba($color4,.1);
             border-radius: 10px;
-            height: 20px;
+            height: 10px;
+            opacity: 0;
+            text-align: center;
             transition: .2s ease-in-out;
-            
         }
         
         > .invisibleHolderSpace {
             height: 0;
+            opacity: 0;
             transition: .2s ease-in-out;
         }
     }
@@ -199,7 +202,7 @@ $color5: #277835;
         -webkit-line-clamp: 1;
     }
     
-    &.Completed {
+    &.completed {
         background-color: $color3;
         box-shadow: 0 0 5px $color5;
         h2{
