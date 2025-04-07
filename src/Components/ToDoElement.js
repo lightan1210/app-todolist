@@ -2,7 +2,6 @@ import { useContext, useRef, useState } from "react";
 import { UserContext } from "./ToDoList";
 
 const ToDoElement = ({ id, description }) => {
-// const ToDoElement = ({ deleteToDo, id, description, index, setActiveElement, showHolderSpaces }) => {
     const [isCompleted, setIsCompleted] = useState(false);
     let descriptionToDo = description;
 
@@ -10,10 +9,6 @@ const ToDoElement = ({ id, description }) => {
     const modalElement = useRef();
 
     const { deleteToDo, setActiveElement } = useContext(UserContext);
-
-    // const deleteToDo = useContext(UserContext.deleteToDo);
-    // const setActiveElement = useContext(UserContext.setActiveElement);
-    // const showHolderSpaces = useContext(UserContext.showHolderSpaces);
 
     return (
         <>

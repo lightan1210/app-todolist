@@ -3,11 +3,11 @@ import HolderSpace from "./HolderSpace"
 import ToDoElement from "./ToDoElement"
 import { UserContext } from "./ToDoList"
 
-export default function ListElement({ id, title, todos, onDrop }) {
+export default function ListElement({ id, title, painted, todos, onDrop }) {
 
     const { deleteList } = useContext(UserContext);
     return(
-        <div className="listElement">
+        <div className={painted ? "listElement selected" : "listElement"}>
             {/* <div className="removeList" onClick={() => deleteList(id)}> X </div> */}
             <div className="titleList">{title}</div>
             <div className="todos">

@@ -25,24 +25,26 @@ const ToDoList = () => {
     // const [titleList, setTitleList] = useState('');
 
     const [destinyLists, setDestinyLists] = useState([]);
+    const [selectedList, setSelectedList] = useState(null);
 
-    
     const inputDescriptionToDoElement = useRef();
     const inputTitleListElement = useRef();
     const selectElement = useRef();
     
     const addList = (titleName) => {
-        // if(titleList) {
-
         if(titleName) {
             
             if(!(lists.some(list => list.title === titleName))) {
-                // setLists([...lists, {id:nextIdList++, title:titleList}]);
                 const updatedDestinyLists = [...destinyLists, {destiny:titleName, idDestinyLists: nextIdList}];
                 setDestinyLists(updatedDestinyLists);
+
+                if(lists.length === 0)
+                    setSelectedList(nextIdList);
+                else
+                    setSelectedList(updatedDestinyLists[updatedDestinyLists.length-1].idDestinyLists);
+
                 setLists([...lists, {id:nextIdList++, title:titleName, todos:[]}]);
                 inputTitleListElement.current.value = '';
-                // setTitleList(inputTitleListElement.current.value);
                 inputTitleListElement.current.focus();
             }
             else
@@ -53,35 +55,35 @@ const ToDoList = () => {
 }
     
     const addToDo = (descriptionToDo) => {
-
         if(!lists[0]) {
             console.log("Debe crear primero una lista antes de agregar una tarea");
         }
         else {
             if(descriptionToDo) {
-                // setTodos([...todos,{id:nextIdToDo++, description:descriptionToDo, idList: 0}].sort((a, b) => a.idList - b.idList));
                 const destiny = destinyLists.find(list => list.destiny === selectElement.current.value);
                 setTodos([...todos,{id:nextIdToDo++, description:descriptionToDo, idList: destiny.idDestinyLists}].sort((a, b) => a.idList - b.idList));
                 inputDescriptionToDoElement.current.value = '';
                 inputDescriptionToDoElement.current.focus();
             }
             else
-            console.log("Falta describir la tarea a realizar");
+                console.log("Falta describir la tarea a realizar");
         }
-
     }
 
     function deleteList(idList) {
         const updatedTodos = todos.filter(todo => todo.idList !== idList);
-
         setTodos(updatedTodos);
-        
         const updatedDestinyLists = destinyLists.filter(destinyList => destinyList.idDestinyLists !== idList);
 
+        if(updatedDestinyLists.length !== 0) {
+            if(!(updatedDestinyLists.some(list => list.idDestinyLists === selectedList)))
+                setSelectedList(updatedDestinyLists[0].idDestinyLists);
+        }
+        else
+            setSelectedList(null);
+
         setDestinyLists(updatedDestinyLists);
-
         const updatedLists = lists.filter(list => list.id !== idList);
-
         setLists(updatedLists);
     }
     
@@ -92,16 +94,10 @@ const ToDoList = () => {
     
     const onDrop = (position, idDestinyLists ) => {
         if(activeElement === null || activeElement === undefined) return;
-        
+
         const indexOfElementToMove = todos.findIndex(todo => todo.id === activeElement);
-
         const globalOriginOfDestinyPosition = todos.findIndex(todo => todo.idList === idDestinyLists);
-
-        // if(indexOfElementToMove === globalOriginOfDestinyPosition + position || indexOfElementToMove + 1 === globalOriginOfDestinyPosition + position) return; //revisar lógica para que no se muestre como opción de lugar a mover
-
         const elementToMove = todos[indexOfElementToMove];
-        
-
         const updatedTodos = todos.filter(todo => todo !== elementToMove);
 
         if(elementToMove.idList !== idDestinyLists)
@@ -126,7 +122,11 @@ const ToDoList = () => {
                     destinyLists.length !== 0 && 
                     <>
                         <input ref={inputDescriptionToDoElement} type='text'></input>
-                        <select ref={selectElement}>
+                        <select
+                            ref={selectElement}
+                            onChange={() => setSelectedList((destinyLists.find(list => list.destiny === selectElement.current.value)).idDestinyLists)}
+                            value={(destinyLists.find(list => list.idDestinyLists === selectedList)).destiny}
+                        >
                         {
                             destinyLists.map((list,key) => {
                                 return (<option key={key} value={list.destiny.toString()}>{list.destiny}</option>)
@@ -148,11 +148,13 @@ const ToDoList = () => {
                                 id={list.id}
                                 key={list.id}
                                 title={list.title}
+                                painted={list.id === selectedList}
                                 todos={todos.filter(todo => todo.idList === list.id)}
-                                    activeElement={activeElement}/>
+                                activeElement={activeElement}
+                                className="pepito"
+                                />
                             )
                         })
-
                     }
                 </div>
             </UserContext.Provider>

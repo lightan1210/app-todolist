@@ -31,6 +31,12 @@ $color5: #277835;
 .listElement {
     position: relative;
 
+    &.selected {
+        > .titleList {
+            background-color: $color4;
+        }
+    }
+
     > .removeList {
         color: $color1;
         cursor: pointer;

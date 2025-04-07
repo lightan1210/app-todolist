@@ -3,9 +3,7 @@ import { UserContext } from "./ToDoList";
 
 export default function HolderSpace( { index, idList }) {
     const { onDrop } = useContext(UserContext);
-    
     const [showHolder, setShowHolder] = useState('minimumHolderSpace');
-
 
     return (
         <section
