@@ -134,6 +134,17 @@ $color5: #277835;
         }
     }
 
+    .removeList {
+        cursor: pointer;
+        font-size: .8em;
+        position: absolute;
+        scale: 2;
+        top: 2px;
+        transform-origin: top right;
+        right: 5px;
+        user-select: none;
+    }
+
     h1 {
         color: $color3;
         text-align: center;

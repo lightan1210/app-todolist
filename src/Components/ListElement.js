@@ -1,8 +1,11 @@
-import { Fragment } from "react"
+import { Fragment, useContext } from "react"
 import HolderSpace from "./HolderSpace"
 import ToDoElement from "./ToDoElement"
+import { UserContext } from "./ToDoList"
 
 export default function ListElement({ id, title, todos, onDrop }) {
+
+    const { deleteList } = useContext(UserContext);
     return(
         <div className="listElement">
             {/* <div className="removeList" onClick={() => deleteList(id)}> X </div> */}
@@ -28,6 +31,7 @@ export default function ListElement({ id, title, todos, onDrop }) {
                     })
                 }
             </div>
+            <div className="removeList" onClick={() => deleteList(id)}> X </div>
         </div>
     )
 }

@@ -18,28 +18,39 @@ const ToDoList = () => {
     
     const [activeElement, setActiveElement] = useState(null);
     
-    const [todos, setTodos] = useState(allToDos);
+    const [todos, setTodos] = useState([]);
     // const [descriptionToDo, setDescriptionToDo] = useState('');
 
-    const [lists, setLists] = useState(initialLists);
+    const [lists, setLists] = useState([]);
     // const [titleList, setTitleList] = useState('');
+
+    const [destinyLists, setDestinyLists] = useState([]);
+
     
     const inputDescriptionToDoElement = useRef();
     const inputTitleListElement = useRef();
-
+    const selectElement = useRef();
+    
     const addList = (titleName) => {
         // if(titleList) {
 
         if(titleName) {
-            // setLists([...lists, {id:nextIdList++, title:titleList}]);
-            setLists([...lists, {id:nextIdList++, title:titleName, todos:[]}]);
-            inputTitleListElement.current.value = '';
-            // setTitleList(inputTitleListElement.current.value);
-            inputTitleListElement.current.focus();
+            
+            if(!(lists.some(list => list.title === titleName))) {
+                // setLists([...lists, {id:nextIdList++, title:titleList}]);
+                const updatedDestinyLists = [...destinyLists, {destiny:titleName, idDestinyLists: nextIdList}];
+                setDestinyLists(updatedDestinyLists);
+                setLists([...lists, {id:nextIdList++, title:titleName, todos:[]}]);
+                inputTitleListElement.current.value = '';
+                // setTitleList(inputTitleListElement.current.value);
+                inputTitleListElement.current.focus();
+            }
+            else
+                console.log(`Ya existe una lista con el título ${titleName}.`)
         }
         else
             console.log("No se ha ingresado un título para la nueva lista");
-    }
+}
     
     const addToDo = (descriptionToDo) => {
 
@@ -47,9 +58,10 @@ const ToDoList = () => {
             console.log("Debe crear primero una lista antes de agregar una tarea");
         }
         else {
-
             if(descriptionToDo) {
-                setTodos([...todos,{id:nextIdToDo++, description:descriptionToDo, idList: 0}].sort((a, b) => a.idList - b.idList));
+                // setTodos([...todos,{id:nextIdToDo++, description:descriptionToDo, idList: 0}].sort((a, b) => a.idList - b.idList));
+                const destiny = destinyLists.find(list => list.destiny === selectElement.current.value);
+                setTodos([...todos,{id:nextIdToDo++, description:descriptionToDo, idList: destiny.idDestinyLists}].sort((a, b) => a.idList - b.idList));
                 inputDescriptionToDoElement.current.value = '';
                 inputDescriptionToDoElement.current.focus();
             }
@@ -58,18 +70,32 @@ const ToDoList = () => {
         }
 
     }
+
+    function deleteList(idList) {
+        const updatedTodos = todos.filter(todo => todo.idList !== idList);
+
+        setTodos(updatedTodos);
+        
+        const updatedDestinyLists = destinyLists.filter(destinyList => destinyList.idDestinyLists !== idList);
+
+        setDestinyLists(updatedDestinyLists);
+
+        const updatedLists = lists.filter(list => list.id !== idList);
+
+        setLists(updatedLists);
+    }
     
     function deleteToDo(id) {
         const updatedTodos = todos.filter(todo => todo.id !== id);
         setTodos(updatedTodos);
     }
     
-    const onDrop = (position, idDestinyList ) => {
+    const onDrop = (position, idDestinyLists ) => {
         if(activeElement === null || activeElement === undefined) return;
         
         const indexOfElementToMove = todos.findIndex(todo => todo.id === activeElement);
 
-        const globalOriginOfDestinyPosition = todos.findIndex(todo => todo.idList === idDestinyList);
+        const globalOriginOfDestinyPosition = todos.findIndex(todo => todo.idList === idDestinyLists);
 
         // if(indexOfElementToMove === globalOriginOfDestinyPosition + position || indexOfElementToMove + 1 === globalOriginOfDestinyPosition + position) return; //revisar lógica para que no se muestre como opción de lugar a mover
 
@@ -78,8 +104,8 @@ const ToDoList = () => {
 
         const updatedTodos = todos.filter(todo => todo !== elementToMove);
 
-        if(elementToMove.idList !== idDestinyList)
-            elementToMove.idList = idDestinyList;
+        if(elementToMove.idList !== idDestinyLists)
+            elementToMove.idList = idDestinyLists;
 
         if(indexOfElementToMove < globalOriginOfDestinyPosition + position)
             updatedTodos.splice(globalOriginOfDestinyPosition + position-1, 0, elementToMove);
@@ -89,36 +115,48 @@ const ToDoList = () => {
         setTodos(updatedTodos);
     }
 
-return (
-    <div className="toDoList">
-                <div className="newListField">
-                    <input ref={inputTitleListElement} type='text'></input>
-                    <button onClick={() => addList(inputTitleListElement.current.value)}>Crear lista</button>
-                </div>
-                <div className="newToDoField">
-                    <input ref={inputDescriptionToDoElement} type='text'></input>
-                    <button onClick={() => addToDo(inputDescriptionToDoElement.current.value)}>Agregar tarea</button>
-                </div>
-                <h1>LISTA DE TAREAS</h1>
-                <UserContext.Provider value={{onDrop, deleteToDo, activeElement, setActiveElement }} >
-                    <div className="lists">
-                        {
-                            lists &&
-                            lists.map((list) => {
-                                return(
-                                    <ListElement
-                                    id={list.id}
-                                    key={list.id}
-                                    title={list.title}
-                                    todos={todos.filter(todo => todo.idList === list.id)}
-                                        activeElement={activeElement}/>
-                                )
-                            })
-
-                        }
-                    </div>
-                </UserContext.Provider>
+    return (
+        <div className="toDoList">
+            <div className="newListField">
+                <input ref={inputTitleListElement} type='text'></input>
+                <button onClick={() => addList(inputTitleListElement.current.value)}>Crear lista</button>
             </div>
+            <div className="newToDoField">
+                {
+                    destinyLists.length !== 0 && 
+                    <>
+                        <input ref={inputDescriptionToDoElement} type='text'></input>
+                        <select ref={selectElement}>
+                        {
+                            destinyLists.map((list,key) => {
+                                return (<option key={key} value={list.destiny.toString()}>{list.destiny}</option>)
+                            })
+                        }
+                        </select>
+                        <button onClick={() => addToDo(inputDescriptionToDoElement.current.value)}>Agregar tarea</button>
+                    </>
+                }
+            </div>
+            <h1>LISTA DE TAREAS</h1>
+            <UserContext.Provider value={{onDrop, deleteToDo, deleteList, activeElement, setActiveElement }} >
+                <div className="lists">
+                    {
+                        lists &&
+                        lists.map((list) => {
+                            return(
+                                <ListElement
+                                id={list.id}
+                                key={list.id}
+                                title={list.title}
+                                todos={todos.filter(todo => todo.idList === list.id)}
+                                    activeElement={activeElement}/>
+                            )
+                        })
+
+                    }
+                </div>
+            </UserContext.Provider>
+        </div>
     )
 }
 
