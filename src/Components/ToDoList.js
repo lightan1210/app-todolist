@@ -117,15 +117,21 @@ const ToDoList = () => {
                 <input ref={inputTitleListElement} type='text'></input>
                 <button onClick={() => addList(inputTitleListElement.current.value)}>Crear lista</button>
             </div>
-            <div className="newToDoField">
-                {
-                    destinyLists.length !== 0 && 
-                    <>
-                        <input ref={inputDescriptionToDoElement} type='text'></input>
+                        <div className="newToDoField">
+                        <input
+                            ref={inputDescriptionToDoElement}
+                            type='text'
+                            disabled={destinyLists.length === 0}
+                        >
+
+                            </input>
+                        {destinyLists.length !== 0 ? <span>Colocar tarea en</span> : <span></span>}
                         <select
+                            className="destinyListOptions"
                             ref={selectElement}
                             onChange={() => setSelectedList((destinyLists.find(list => list.destiny === selectElement.current.value)).idDestinyLists)}
-                            value={(destinyLists.find(list => list.idDestinyLists === selectedList)).destiny}
+                            value={destinyLists.length !== 0 && (destinyLists.find(list => list.idDestinyLists === selectedList)).destiny}
+                            disabled={destinyLists.length === 0}
                         >
                         {
                             destinyLists.map((list,key) => {
@@ -133,29 +139,41 @@ const ToDoList = () => {
                             })
                         }
                         </select>
-                        <button onClick={() => addToDo(inputDescriptionToDoElement.current.value)}>Agregar tarea</button>
-                    </>
-                }
-            </div>
+                        <button
+                            onClick={() => addToDo(inputDescriptionToDoElement.current.value)}
+                            disabled={destinyLists.length === 0}
+                        >
+                            Agregar tarea
+                        </button>
+                        </div>
             <h1>LISTA DE TAREAS</h1>
             <UserContext.Provider value={{onDrop, deleteToDo, deleteList, activeElement, setActiveElement }} >
                 <div className="lists">
-                    {
-                        lists &&
-                        lists.map((list) => {
-                            return(
-                                <ListElement
-                                id={list.id}
-                                key={list.id}
-                                title={list.title}
-                                painted={list.id === selectedList}
-                                todos={todos.filter(todo => todo.idList === list.id)}
-                                activeElement={activeElement}
-                                className="pepito"
-                                />
-                            )
-                        })
-                    }
+                        {
+                            lists.length !== 0 ?
+                            lists.map((list) => {
+                                return(
+                                    <ListElement
+                                    id={list.id}
+                                    key={list.id}
+                                    title={list.title}
+                                    painted={list.id === selectedList}
+                                    todos={todos.filter(todo => todo.idList === list.id)}
+                                    activeElement={activeElement}
+                                    />
+                                )
+                            })
+                            :
+                            
+                            <ol className="noLists">
+                                <li>
+                                    Cree una lista   colocándole un título en el campo y luego pulse el botón "Crear Lista".
+                                </li>
+                                <li>
+                                    Para agregar tareas a una lista entonces complete el segundo campo con la tarea, elija la lista en la cual desea colocarla y luego haz click en el botón "Crear Tarea".
+                                </li>
+                            </ol>
+                        }
                 </div>
             </UserContext.Provider>
         </div>

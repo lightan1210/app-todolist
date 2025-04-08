@@ -9,7 +9,11 @@ export default function ListElement({ id, title, painted, todos, onDrop }) {
     return(
         <div className={painted ? "listElement selected" : "listElement"}>
             {/* <div className="removeList" onClick={() => deleteList(id)}> X </div> */}
-            <div className="titleList">{title}</div>
+            <div className="titleList">
+                <p>
+                    {title}
+                </p>
+            </div>
             <div className="todos">
                 <HolderSpace idList={id} index={0} onDrop={() => onDrop(0, id)}/>
                 {

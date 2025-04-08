@@ -22,21 +22,30 @@ $color5: #277835;
     }
 }
 
+* {
+    box-sizing: border-box;
+}
+
 .App {
     background-color: $color1;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Oxygen, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     height: 100vh;
+    width: 100%;
 }
 
 .listElement {
+    box-shadow: 0 0 2px 0 $color4;
+    height: fit-content;
     position: relative;
-
+    min-width: 250px;
+    max-width: 250px;
+    
     &.selected {
         > .titleList {
             background-color: $color4;
         }
     }
-
+    
     > .removeList {
         color: $color1;
         cursor: pointer;
@@ -48,27 +57,36 @@ $color5: #277835;
         right: 5px;
         user-select: none;
     }
-
+    
     > .titleList {
-        background-color: $color2;
-        box-shadow: 0 0 0 1px $color2;
         color: $color1;
         margin-left: 0px;
         padding: 8px 0;
-        text-align: center;
         text-transform: uppercase;
+        
+        > p {
+            line-clamp: 1;
+            margin: 0;
+            overflow: hidden;
+            padding-left: 10px;
+            padding-right: 25px;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            -webkit-line-clamp: 1;
+        }
     }
-
+    
     > .todos {
+        background-color: $color1;
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
-        box-shadow: 0 0 0 1px $color2;
         display: grid;
         gap: 10px;
         grid-auto-flow: row;
-        // margin: auto;
         padding: 10px;
-
+        
         > .holderSpace {
             background-color: rgba($color4,.6);
             border: 3px dashed $color4;
@@ -79,7 +97,7 @@ $color5: #277835;
             opacity: 1;
             text-align: center;
             transition: .2s ease-in-out;
-            width: 250px;
+            width: 100%;
             
             &::after {
                 content: "Mover Aquí";
@@ -105,23 +123,63 @@ $color5: #277835;
 }
 
 .lists {
-    display: grid;
+    background-color: $color2;
+    box-shadow: 0 -2px 2px 0px $color4;
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: nowrap;
     gap: 10px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, .3333333333333333fr));
-    grid-template-rows: repeat(auto-fit, minmax(fit-content, 1fr));
+    grid-auto-flow: column;
+    height: 100%;
+    overflow: scroll;
+    padding: 10px;
+    // grid-template-columns: repeat(auto-fit, minmax(250px, .3333333333333333fr));
+    // grid-template-rows: repeat(auto-fit, minmax(fit-content, 1fr));
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: $color4; 
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: $color1; 
+        border-radius: 5px;
+    }
+}
+
+.noLists {
+    margin: auto;
+    text-align: center;
+    width: 50%;
+
+    > li {
+        text-align: justify;
+        margin: 40px 0;
+        font-style: italic;
+    }
 }
 
 .toDoList {
-    padding: 10px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
     
     > .newListField {
         align-items: center;
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin: 20px auto;
+        margin: 0 auto;
+        padding: 20px 0;
         width: 50%;
-
+        
         > input {
             width: 100%;
         }
@@ -130,13 +188,28 @@ $color5: #277835;
     > .newToDoField {
         align-items: center;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 10px;
         margin: 20px auto;
         width: 50%;
+        
+        > button {
+            margin: auto;
+        }
 
         > input {
-            width: 100%;
+            flex-basis: 100%;
+        }
+
+        > span {
+            flex-basis: 50%;
+            text-align: center;
+        }
+
+        > .destinyListOptions {
+            flex-basis: 50%;
+            max-width: 40%;
         }
     }
 
@@ -166,7 +239,7 @@ $color5: #277835;
     margin: auto;
     padding: 0;
     position: relative;
-    width: 250px;
+    width: 100%;
     
     .removeToDo {
         cursor: pointer;
@@ -236,44 +309,44 @@ $color5: #277835;
         color: $color1;
         height: fit-content;
         min-height: 70%;
-        overflow-y: scroll;
         padding: 0;
         position: relative;
         width: 80%;
-
-        &::-webkit-scrollbar {
-            width: 10px;
-        }
         
-        /* Track */
-        &::-webkit-scrollbar-track {
-            background: $color4; 
-        }
-        
-        /* Handle */
-        &::-webkit-scrollbar-thumb {
-            background: $color1; 
-            border-radius: 5px;
-        }
-
         > form button {
             border-radius: 5px;
             cursor: pointer;
             font-size: 1.2em;
             outline: none;
         }
-
+        
         > p {
             background-color: $color2;
             font-size: 1.5em;
-            min-height: calc(100% - 65px);
+            min-height: calc(100% - 45px);
             margin-top: 45px;
             padding: 10px;
+            overflow-y: scroll;
             position: absolute;
             text-align: justify;
-            width: calc(100% - 20px);
+            width: 100%;
+    
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+            
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: $color2; 
+            }
+            
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background: $color1; 
+                border-radius: 5px;
+            }
         }
-
+        
         > form {
             position: absolute;
             right: 10px;
