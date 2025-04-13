@@ -199,13 +199,18 @@ $color5: #277835;
         }
 
         > input {
+            flex-grow: 1;
+        }
+
+        > label {
+            text-align: center;
             flex-basis: 100%;
         }
 
-        > span {
-            flex-basis: 50%;
-            text-align: center;
-        }
+        // > span {
+        //     flex-basis: 50%;
+        //     text-align: center;
+        // }
 
         > .destinyListOptions {
             flex-basis: 50%;
@@ -225,7 +230,7 @@ $color5: #277835;
     }
 
     h1 {
-        color: $color3;
+        color: $color4;
         text-align: center;
     }
 }

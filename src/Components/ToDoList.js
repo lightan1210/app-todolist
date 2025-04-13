@@ -114,66 +114,67 @@ const ToDoList = () => {
     return (
         <div className="toDoList">
             <div className="newListField">
-                <input ref={inputTitleListElement} type='text'></input>
+                <label>Titulo de la lista</label>
+                <input ref={inputTitleListElement} type='text' placeholder="Ingrese el titulo de su lista" />
                 <button onClick={() => addList(inputTitleListElement.current.value)}>Crear lista</button>
             </div>
-                        <div className="newToDoField">
-                        <input
-                            ref={inputDescriptionToDoElement}
-                            type='text'
-                            disabled={destinyLists.length === 0}
-                        >
+            <div className="newToDoField">
+                <label>Descripcion de la tarea</label>
+                <input
+                    ref={inputDescriptionToDoElement}
+                    type='text'
+                    disabled={lists.length === 0}
+                    placeholder='Describa la tarea'
+                />
 
-                            </input>
-                        {destinyLists.length !== 0 ? <span>Colocar tarea en</span> : <span></span>}
-                        <select
-                            className="destinyListOptions"
-                            ref={selectElement}
-                            onChange={() => setSelectedList((destinyLists.find(list => list.destiny === selectElement.current.value)).idDestinyLists)}
-                            value={destinyLists.length !== 0 && (destinyLists.find(list => list.idDestinyLists === selectedList)).destiny}
-                            disabled={destinyLists.length === 0}
-                        >
-                        {
-                            destinyLists.map((list,key) => {
-                                return (<option key={key} value={list.destiny.toString()}>{list.destiny}</option>)
-                            })
-                        }
-                        </select>
-                        <button
-                            onClick={() => addToDo(inputDescriptionToDoElement.current.value)}
-                            disabled={destinyLists.length === 0}
-                        >
-                            Agregar tarea
-                        </button>
-                        </div>
+                <select
+                    className="destinyListOptions"
+                    ref={selectElement}
+                    onChange={() => setSelectedList((destinyLists.find(list => list.destiny === selectElement.current.value)).idDestinyLists)}
+                    value={destinyLists.length !== 0 && (destinyLists.find(list => list.idDestinyLists === selectedList)).destiny}
+                    disabled={destinyLists.length === 0}
+                >
+                {
+                    destinyLists.map((list,key) => {
+                        return (<option key={key} value={list.destiny.toString()}>{list.destiny}</option>)
+                    })
+                }
+                </select>
+                <button
+                    onClick={() => addToDo(inputDescriptionToDoElement.current.value)}
+                    disabled={destinyLists.length === 0}
+                >
+                    Agregar tarea
+                </button>
+            </div>
             <h1>LISTA DE TAREAS</h1>
             <UserContext.Provider value={{onDrop, deleteToDo, deleteList, activeElement, setActiveElement }} >
                 <div className="lists">
-                        {
-                            lists.length !== 0 ?
-                            lists.map((list) => {
-                                return(
-                                    <ListElement
-                                    id={list.id}
-                                    key={list.id}
-                                    title={list.title}
-                                    painted={list.id === selectedList}
-                                    todos={todos.filter(todo => todo.idList === list.id)}
-                                    activeElement={activeElement}
-                                    />
-                                )
-                            })
-                            :
-                            
-                            <ol className="noLists">
-                                <li>
-                                    Cree una lista   colocándole un título en el campo y luego pulse el botón "Crear Lista".
-                                </li>
-                                <li>
-                                    Para agregar tareas a una lista entonces complete el segundo campo con la tarea, elija la lista en la cual desea colocarla y luego haz click en el botón "Crear Tarea".
-                                </li>
-                            </ol>
-                        }
+                    {
+                        lists.length !== 0 ?
+                        lists.map((list) => {
+                            return(
+                                <ListElement
+                                id={list.id}
+                                key={list.id}
+                                title={list.title}
+                                painted={list.id === selectedList}
+                                todos={todos.filter(todo => todo.idList === list.id)}
+                                activeElement={activeElement}
+                                />
+                            )
+                        })
+                        :
+                        
+                        <ol className="noLists">
+                            <li>
+                                Cree una lista   colocándole un título en el campo y luego pulse el botón "Crear Lista".
+                            </li>
+                            <li>
+                                Para agregar tareas a una lista entonces complete el segundo campo con la tarea, elija la lista en la cual desea colocarla y luego haz click en el botón "Agregar Tarea".
+                            </li>
+                        </ol>
+                    }
                 </div>
             </UserContext.Provider>
         </div>
